@@ -1,0 +1,15 @@
+{
+  "author": "Jeffrey Van Alstine <jeffv@redmantech.com> (http://www.redmantech.com)",
+  "name": "node-mlt",
+  "description": "A library for building media lovin' toolkit xml documents",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git@git.rmcloud.com:node-module/node-mlt.git"
+  },
+  "engines": {
+    "node": "v0.5.0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
