@@ -7,7 +7,7 @@ var XMLObj = function (params) {
   this._inner = params.inner
 }
 
-XMLObj.prototype = _.extend(XMLObj.prototype, require('../lib/xml.js'))
+XMLObj.prototype = _.extend(XMLObj.prototype, require('../../lib/interfaces/xml.js'))
 
 var produce = new XMLObj({
   node: 'Produce',
