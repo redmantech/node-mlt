@@ -1,4 +1,5 @@
 var assert = require('assert')
+  , _ = require('underscore')
 
 var XMLObj = function (params) {
   this._node = params.node
@@ -6,7 +7,7 @@ var XMLObj = function (params) {
   this._inner = params.inner
 }
 
-XMLObj.prototype = require('../lib/xml.js').prototype
+XMLObj.prototype = _.extend(XMLObj.prototype, require('../lib/xml.js'))
 
 var produce = new XMLObj({
   node: 'Produce',

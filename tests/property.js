@@ -1,6 +1,5 @@
 var assert = require('assert')
-  , Property = require('../lib/property.js')
-
+  , Property = require('../lib/mlt/property.js')
 
 var name = 'mlt_service'
   , value = 'avformat'
