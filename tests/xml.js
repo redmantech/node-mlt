@@ -63,5 +63,3 @@ assert.throws(function () {
   },
   Error
 )
-
-console.log('XML Object Tests Complete');
