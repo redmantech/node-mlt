@@ -4,11 +4,11 @@ var assert = require('assert')
 var p = new Producer
 delete p._attribs.id //ignore the id since it's UUID and unpredictable for the purposes of this test
 
-p.attrib({
+p.attribs({
   in: 0,
   out: 999
 })
-p.prop({
+p.props({
   mlt_service: 'pixbuff',
   resource: 'apples.jpg'
 })

@@ -11,42 +11,42 @@ ObjWithProps.prototype = _.extend(require('../../lib/interfaces/properties'), Ob
 var a = new ObjWithProps;
 
 //test attributes
-a.attrib('mlt_type', 'producer')
-assert.equal(a.attrib('mlt_type'), 'producer', 'Attribute set by string failed')
+a.attribs('mlt_type', 'producer')
+assert.equal(a.attribs('mlt_type'), 'producer', 'Attribute set by string failed')
 
-a.attrib({
+a.attribs({
   mlt_service: 'avformat',
   resource: 'banana.jpg',
 })
-assert.equal(a.attrib('resource'), 'banana.jpg', 'Attribute set by object failed')
+assert.equal(a.attribs('resource'), 'banana.jpg', 'Attribute set by object failed')
 
-a.attrib('mlt_service', 'pixbuff')
-assert.equal(a.attrib('mlt_service'), 'pixbuff', 'Attribute overwrite failed')
+a.attribs('mlt_service', 'pixbuff')
+assert.equal(a.attribs('mlt_service'), 'pixbuff', 'Attribute overwrite failed')
 
 //test properties
 console.log('vvvvv EXPECTED WARNING vvvvv')
-a.prop('mlt_service', 'avformat')
+a.props('mlt_service', 'avformat')
 console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
-assert.equal(a.prop('mlt_service'),'avformat', 'Property set by string failed')
+assert.equal(a.props('mlt_service'),'avformat', 'Property set by string failed')
 
-a.prop({
+a.props({
   kdenlive_id: 'kdenlive_producer',
   kdenlive_type: 'kdenlive_pixbuff'
 })
-assert.equal(a.prop('kdenlive_id'), 'kdenlive_producer', 'Property set by object failed')
+assert.equal(a.props('kdenlive_id'), 'kdenlive_producer', 'Property set by object failed')
 
-a.prop('kdenlive_type', 'kdenlive_avformat')
-assert.equal(a.prop('kdenlive_type'), 'kdenlive_avformat')
+a.props('kdenlive_type', 'kdenlive_avformat')
+assert.equal(a.props('kdenlive_type'), 'kdenlive_avformat')
 
-a.prop('mlt_service', '')
-assert.equal(a.prop('mlt_service'), undefined, 'Property clear failed')
+a.props('mlt_service', '')
+assert.equal(a.props('mlt_service'), undefined, 'Property clear failed')
 
-a.attrib('mlt_service', '')
-assert.equal(a.attrib('mlt_service'), undefined, 'Attribute clear failed')
+a.attribs('mlt_service', '')
+assert.equal(a.attribs('mlt_service'), undefined, 'Attribute clear failed')
 
 console.log('vvvvv EXPECTED WARNING vvvvv')
-a.prop('id', '')
+a.props('id', '')
 console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
 console.log('vvvvv EXPECTED WARNING vvvvv')
-a.attrib('id', '2')
+a.attribs('id', '2')
 console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
