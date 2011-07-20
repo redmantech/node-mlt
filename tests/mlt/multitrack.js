@@ -4,4 +4,6 @@ var assert = require('assert')
 var track = new Multitrack.Track({ id: function () { return 'abc' }})
   , multitrack = (new Multitrack).addTrack(track)
 
-console.log(multitrack.toString({pretty:true}))
+multitrack._attribs.id = 'def';
+
+assert.equal(multitrack.toString(), '<multitrack id="def"><track producer="abc"/></multitrack>', "Multitrack with one track failed")
