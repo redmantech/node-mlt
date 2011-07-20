@@ -6,7 +6,14 @@ ObjWithProps = function () {
   this._inner = {}
 }
 
-ObjWithProps.prototype = _.extend(require('../../lib/interfaces/properties'), ObjWithProps.proto)
+ObjWithProps.prototype = _.extend(ObjWithProps.prototype, require('../../lib/interfaces/properties'))
+
+ObjWithProps.prototype.attribs = function (att, val) {
+  return this._attrs(att, val)
+}
+ObjWithProps.prototype.props = function (prop, val) {
+  return this._props(prop, val)
+}
 
 var a = new ObjWithProps;
 
