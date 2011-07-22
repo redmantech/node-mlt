@@ -9,5 +9,5 @@ var entry = new Entry({
   length: 100
 })
 
-var xml = '<entry producer="abc" in="100" length="199"/>'
+var xml = '<entry producer="abc" in="100" out="199"/>'
 assert.equal(entry.toString(), xml, "Entry builder failed")
