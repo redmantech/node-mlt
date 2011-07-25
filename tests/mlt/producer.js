@@ -7,7 +7,7 @@ var p = new Producer.Image({
 })
 p._attribs.id = '9571545a-b072-4a72-9b64-fec67563c1be' //override random number for testing
 
-var xml = '<producer id="9571545a-b072-4a72-9b64-fec67563c1be" mlt_service="pixbuff" out="99" resource="/home/jeffrey/Downloads/banana.jpg"/>'
+var xml = '<producer id="9571545a-b072-4a72-9b64-fec67563c1be" mlt_service="pixbuf" out="99" resource="/home/jeffrey/Downloads/banana.jpg"/>'
 assert.equal(p.toString(), xml, "Image Builder Failed")
 
 var a = new Producer.Audio({
