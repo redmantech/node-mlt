@@ -15,5 +15,8 @@
     "underscore": "1.1.x",
     "node-uuid": "1.2.x"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "gm": "0.5.x",
+    "step": "0.0.x"
+  }
 }
