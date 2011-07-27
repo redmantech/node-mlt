@@ -135,6 +135,19 @@ step(
     var filename = '/home/jeffrey/kdenlive/scripts/script003.sh.mlt'    
     fs.writeFile(filename, mlt.toString(), function () {
       console.log('WROTE: ' + filename)
+      console.log('Compiling ...')
+
+      var spawn = require('child_process').spawn
+
+      compiler = spawn('/home/jeffrey/kdenlive/scripts/script003.sh', [])
+      compiler.on('exit', function (code) {
+        if (code === 0){
+          console.log('... Finis!')
+        }
+        else {
+          console.log('Something Funny Happened (Code ' + code + ')')
+        }
+      })
     })
   }
 )
