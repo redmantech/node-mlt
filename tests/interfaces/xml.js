@@ -53,7 +53,7 @@ food.obj = new XMLObj({
 })
 
 food.xml = '<Food edible="true"><Produce healthy="yes" tasty="often" vegetarian="yes"><banana source.of="potassium">bananas are good</banana><orange source.of="vitamin c">oranges are ok</orange></Produce><fish/><meat/></Food>';
-food.prettyXml = "<Food edible=\"true\">\n  \n  <Produce healthy=\"yes\" tasty=\"often\" vegetarian=\"yes\">\n    \n    <banana source.of=\"potassium\">\n      bananas are good\n    </banana>\n    \n    <orange source.of=\"vitamin c\">\n      oranges are ok\n    </orange>\n    \n  </Produce>\n  \n  <fish/>\n  \n  <meat/>\n  \n</Food>\n";
+food.prettyXml = '<Food edible="true">\n  <Produce healthy="yes" tasty="often" vegetarian="yes">\n    <banana source.of="potassium">bananas are good</banana>\n    <orange source.of="vitamin c">oranges are ok</orange>\n  </Produce>\n  <fish/>\n  <meat/>\n</Food>\n'
 
 assert.equal(food.obj.toString(), food.xml, 'Raw XML generation malformed')
 assert.equal(food.obj.toString({pretty:true}), food.prettyXml, "Pretty Printed XML generation malformed")
