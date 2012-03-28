@@ -3,7 +3,7 @@
   "name": "node-mlt",
   "main": "./lib/mlt.js",
   "description": "A library for building media lovin' toolkit xml documents",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "git@git.rmcloud.com:node-module/node-mlt.git"
