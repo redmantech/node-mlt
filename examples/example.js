@@ -1,9 +1,74 @@
+if (!process.argv[2]) {
+  console.log('Useage: node example.js "{flickr text search}"');
+  process.exit();
+}
+
 var fs = require('fs')
   , _ = require('underscore')
-  , gm = require('gm')
   , step = require('step')
   , MLT = require('../lib/mlt')
+  , request = require('request')
+  , config = require('./config.js')
+  , exec = require('child_process').exec
+  , flickerUrl = 'http://api.flickr.com/services/rest/?format=json&nojsoncallback=1&api_key=' + config.flickrApiKey
 
+step(
+  function () { //Search Flickr by keyword
+    var callback = this
+      , url = flickerUrl + '&method=flickr.photos.search&license=7&text=' + process.argv[2];
+
+    request.get({url: url}, function (err, resp, body) {
+      if (err) {
+        return callback(err);
+      }
+
+      body = JSON.parse(body);
+      console.log(body.photos.total + " Photos Found on Flickr\n");
+      callback(null, body.photos.photo);
+    });
+
+  },
+  function (err, photos) { //download photos to ./images/
+    if (err) {
+      throw err;
+    }
+
+    var count = 0
+      , group = this.group();
+    _.each(photos, function (photo, i) {
+      var url = flickerUrl + '&method=flickr.photos.getSizes&photo_id=' + photo.id
+        , callback = group();
+      request.get({url:url}, function (err, resp, body) {
+        if (err) {
+          return callback(err);
+        }
+        body = JSON.parse(body).sizes.size;
+        body = _.max(body, function (size) {
+          return size.width * size.height;
+        });
+
+        var filename = './images/' + count++
+        var child = exec('wget ' + body.source +' -O ' + filename, function (err, stdout, stderr) {
+          if (err) {
+            return callback(err);
+          }
+
+          callback(null, filename);
+        });
+      });
+    }, this);
+  },
+  function (err, photos) {
+    if (err) {
+      throw (err);
+    }
+
+    console.dir(photos);
+
+  }
+)
+
+/*
 var getResources = function (type, callback) {
   var dir = '/' + type + '/'
 
@@ -151,3 +216,4 @@ step(
     })
   }
 )
+*/
