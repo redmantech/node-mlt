@@ -27,5 +27,11 @@
   "devDependencies": {
     "gm": "0.5.x",
     "step": "0.0.x"
-  }
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.html"
+    }
+  ]
 }
