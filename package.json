@@ -1,6 +1,13 @@
 {
   "author": "Jeffrey Van Alstine <jeffv@redmantech.com> (http://www.redmantech.com)",
   "name": "node-mlt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/redmantech/node-mlt"
+  },
+  "bugs": {
+    "url": "http://github.com/redmantech/node-mlt/issues"
+  },
   "main": "./lib/mlt.js",
   "description": "A library for building media lovin' toolkit xml documents",
   "version": "0.0.1",
@@ -8,13 +15,14 @@
     "type": "git",
     "url": "git@git.rmcloud.com:node-module/node-mlt.git"
   },
-  "engines": {
-    "node": "v0.5.0"
+   "engines": {
+    "node": "0.4 || 0.6",
+    "npm": "1"
   },
   "dependencies": {
-    "xmlbuilder": "0.1.x",
-    "underscore": "1.1.x",
-    "node-uuid": "1.2.x"
+    "xmlbuilder": "0.3.x",
+    "underscore": "1.3.x",
+    "node-uuid": "1.3.x"
   },
   "devDependencies": {
     "gm": "0.5.x",
