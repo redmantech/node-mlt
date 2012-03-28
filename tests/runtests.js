@@ -34,7 +34,7 @@ console.log('### MLT TRACTOR ###')
 require('./mlt/tractor.js')
 
 console.log('### MLT TRANSITION ###')
-require('./mlt/TRANSITION.js')
+require('./mlt/transition.js')
 
 
 

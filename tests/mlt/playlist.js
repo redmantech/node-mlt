@@ -19,5 +19,5 @@ p.push({
   producer: producer
 })._attribs.id = 'efgh'
 
-var xml = '<playlist id="efgh"><entry producer="abcd" in="1400" length="1999"/><blank length="1000"/><producer id="abcd" mlt_service="pixbuff" out="599"/></playlist>'
+var xml = '<playlist id="efgh"><entry producer="abcd" in="1400" out="1999"/><blank length="1000"/><producer id="abcd" mlt_service="pixbuf" out="599"/></playlist>'
 assert.equal(p.toString(), xml, "Playlist Push Failure")
