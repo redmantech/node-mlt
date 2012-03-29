@@ -25,6 +25,9 @@ step(
 
       body = JSON.parse(body);
       console.log(body.photos.total + ' Photos Found on Flickr');
+      if (body.photos.total > 25) {
+        console.log('Using the first 25.');
+      }
       callback(null, body.photos.photo);
     });
 
@@ -36,10 +39,22 @@ step(
     photos = photos.slice(0,25); //limit to 25 photos
 
     var count = 0
-      , group = this.group();
+      , photoGroup = this.group()
+      , musicCallback = this.parallel();
+
+    fs.readdir('./audio/', function(err, resources) {
+      if (err) {
+        return musicCallback(err);
+      }
+
+      resource = process.cwd() + '/audio/' + _.first(_.sortBy(resources, function () {return Math.random()}));
+
+      musicCallback(null, resource);
+    })
+
     _.each(photos, function (photo, i) {
       var url = flickerUrl + '&method=flickr.photos.getSizes&photo_id=' + photo.id
-        , callback = group();
+        , callback = photoGroup();
       request.get({url:url}, function (err, resp, body) {
         if (err) {
           return callback(err);
@@ -70,12 +85,10 @@ step(
       });
     }, this);
   },
-  function (err, photos) {
+  function (err, photos, music) {
     if (err) {
       throw (err);
     }
-
-    console.dir(photos);
 
     var mlt = new MLT
       , multitrack = new MLT.Multitrack
@@ -85,6 +98,17 @@ step(
       , mltFilename = './images/slideshow.mlt'
       , callback = this;
 
+    //Process Audio
+    music = new MLT.Producer.Audio({source: music});
+    mlt.push(music);
+    var music = (new MLT.Playlist()).entry({
+      producer: music,
+      length: (photos.length * showTime) - (photos.length-1) * transitionTime
+    });
+    mlt.push(music);
+    multitrack.addTrack(new MLT.Multitrack.Track(music));
+
+    //process slides
     _.each(photos, function (photo, k) {
       var producer = new MLT.Producer.Image({source: photo.source})
         , playlist = new MLT.Playlist();
@@ -131,8 +155,8 @@ step(
         tractor.push(new MLT.Transition.Luma({
           start: (k+1) * (showTime - transitionTime),
           length: transitionTime,
-          to: k+1,
-          from: k
+          to: k+2, //+1 to the index, because audio is #0
+          from: k+1
         }));
       }
     });
