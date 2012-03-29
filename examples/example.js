@@ -4,13 +4,14 @@ if (!process.argv[2]) {
 }
 
 var fs = require('fs')
+  , child_process = require('child_process')
   , _ = require('underscore')
   , step = require('step')
-  , MLT = require('../lib/mlt')
   , request = require('request')
+  , gm = require('gm')
+  , MLT = require('../lib/mlt')
   , config = require('./config.js')
-  , exec = require('child_process').exec
-  , flickerUrl = 'http://api.flickr.com/services/rest/?format=json&nojsoncallback=1&api_key=' + config.flickrApiKey
+  , flickerUrl = 'http://api.flickr.com/services/rest/?format=json&nojsoncallback=1&api_key=' + config.flickr.apiKey
 
 step(
   function () { //Search Flickr by keyword
@@ -23,7 +24,7 @@ step(
       }
 
       body = JSON.parse(body);
-      console.log(body.photos.total + " Photos Found on Flickr\n");
+      console.log(body.photos.total + ' Photos Found on Flickr');
       callback(null, body.photos.photo);
     });
 
@@ -32,6 +33,7 @@ step(
     if (err) {
       throw err;
     }
+    photos = photos.slice(0,25); //limit to 25 photos
 
     var count = 0
       , group = this.group();
@@ -47,13 +49,23 @@ step(
           return size.width * size.height;
         });
 
-        var filename = './images/' + count++
-        var child = exec('wget ' + body.source +' -O ' + filename, function (err, stdout, stderr) {
+        var filename = 'images/' + count++;
+        var child = child_process.exec('wget ' + body.source +' -O ' + filename, function (err, stdout, stderr) {
           if (err) {
             return callback(err);
           }
 
-          callback(null, filename);
+          gm(filename).size(function (err, size) {
+            if (err) {
+              return callback(err);
+            }
+
+            callback(null, {
+              source: process.cwd() + '/' + filename,
+              height: size.height,
+              width: size.width
+            });
+          });
         });
       });
     }, this);
@@ -65,6 +77,97 @@ step(
 
     console.dir(photos);
 
+    var mlt = new MLT
+      , multitrack = new MLT.Multitrack
+      , tractor = new MLT.Tractor
+      , transitionTime = 25
+      , showTime = 100 + transitionTime * 2
+      , mltFilename = './images/slideshow.mlt'
+      , callback = this;
+
+    _.each(photos, function (photo, k) {
+      var producer = new MLT.Producer.Image({source: photo.source})
+        , playlist = new MLT.Playlist();
+      mlt.push(producer);
+
+      if (k > 0) {
+        playlist.blank(k * showTime - transitionTime * k);
+      }
+
+      var scale = {
+        init: 1 + (Math.random() * 0.125),
+        end: 1 + (Math.random() * 0.125)
+      };
+
+      playlist.entry({
+        producer: producer,
+        length: showTime /*,
+        filters: [
+          (new MLT.Filter.Affine).geometry([
+            {
+              frame: 0,
+              x: parseInt(-photo.width * 0.25 * scale.init),
+              y: parseInt(-photo.height * 0.25 * scale.init),
+              w: parseInt(photo.width * scale.init),
+              h: parseInt(photo.height * scale.init),
+              sat: 100   
+            },
+            {
+              frame: showTime - 1,
+              x: parseInt(-(0.125 + 0.25*Math.random()) * photo.width * scale.end),
+              y: parseInt(-(0.125 + 0.25*Math.random()) * photo.height * scale.end),
+              w: parseInt(scale.end * photo.width),
+              h: parseInt(scale.end * photo.height),
+              sat: 100
+            }
+          ])
+        ]*/
+      });
+
+      mlt.push(playlist);
+      multitrack.addTrack(new MLT.Multitrack.Track(playlist));
+
+      if (photos[k+1] !== undefined) { //have something to transition to
+        tractor.push(new MLT.Transition.Luma({
+          start: (k+1) * (showTime - transitionTime),
+          length: transitionTime,
+          to: k+1,
+          from: k
+        }));
+      }
+    });
+
+    mlt.push(tractor.push(multitrack));
+
+    fs.writeFile(mltFilename, mlt.toString({pretty:true}), function (err) {
+      if (err) {
+        return callback(err);
+      }
+      console.log('Finished prep...');
+      callback(null,mltFilename);
+    });
+  },
+  function (err, mltFilename) {
+    if (err) {
+      throw err;
+    }
+
+    var callback = this
+      , kdenlive = config.kdenlive
+      , videoFilename = './images/untitled.mp4'
+    
+    var child = kdenlive.renderer + ' ' + kdenlive.melt + ' '
+      + kdenlive.avformat + ' avformat - ' + mltFilename + ' ' 
+      + videoFilename + ' ' + kdenlive.options;
+
+    console.log('Melting. Please be Patient!');
+    child = child_process.exec(child, function (err, stdout, stderr) { 
+      if (err) {
+        return callback(err);
+      }
+
+      console.log('Finished: ' + videoFilename);
+    });
   }
 )
 
