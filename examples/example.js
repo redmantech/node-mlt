@@ -179,10 +179,7 @@ step(
     var callback = this
       , kdenlive = config.kdenlive
       , videoFilename = './images/untitled.mp4'
-    
-    var child = kdenlive.renderer + ' ' + kdenlive.melt + ' '
-      + kdenlive.avformat + ' avformat - ' + mltFilename + ' ' 
-      + videoFilename + ' ' + kdenlive.options;
+      , child = 'melt ' + mltFilename + ' -consumer avformat:' + videoFilename;
 
     console.log('Melting. Please be Patient!');
     child = child_process.exec(child, function (err, stdout, stderr) { 
