@@ -1,8 +1,3 @@
-if (!process.argv[2]) {
-  console.log('Useage: node example.js "{flickr text search}"');
-  process.exit();
-}
-
 var fs = require('fs')
   , child_process = require('child_process')
   , querystring = require('querystring')
@@ -55,7 +50,7 @@ step(
       })
     }
     else {
-      console.log ('Write instructions');
+      console.log ('Usage:\n\t\t-s/--search {keyword}\n\t\t\tSearch by keyword\n\t\t-g/--gallery {gallery URL}\n\t\t\tCreate from a gallery');
       process.exit();
     }
   },
