@@ -5,20 +5,67 @@ if (!process.argv[2]) {
 
 var fs = require('fs')
   , child_process = require('child_process')
+  , querystring = require('querystring')
   , _ = require('underscore')
   , step = require('step')
   , request = require('request')
   , gm = require('gm')
   , MLT = require('../lib/mlt')
   , config = require('./config.js')
-  , flickerUrl = 'http://api.flickr.com/services/rest/?format=json&nojsoncallback=1&api_key=' + config.flickr.apiKey
-
+  , flickrUrl = 'http://api.flickr.com/services/rest/?'
+  , flickrQueryDefaults = {
+    format: 'json',
+    nojsoncallback: '1',
+    api_key: config.flickr.apiKey
+  }
 step(
   function () { //Search Flickr by keyword
     var callback = this
-      , url = flickerUrl + '&method=flickr.photos.search&license=7&text=' + process.argv[2];
+      , flickrQueryString = _.extend({}, flickrQueryDefaults);
 
-    request.get({url: url}, function (err, resp, body) {
+    if (process.argv[2] === '-s' || process.argv[2] === '--search') {
+      flickrQueryString.method = 'flickr.photos.search';
+      flickrQueryString.license = '7';
+      flickrQueryString.text = process.argv[3];
+
+      callback(null, querystring.stringify(flickrQueryString));
+    }
+    else if (process.argv[2] === '-g' || process.argv[2] === '--gallery') {
+      flickrQueryString.method = 'flickr.urls.lookupGallery';
+      flickrQueryString.url = process.argv[3];
+      flickrQueryString = querystring.stringify(flickrQueryString);
+      request.get({url: flickrUrl + flickrQueryString}, function (err, req, body) {
+        if (err) {
+          return callback(err);
+        }
+
+        body = JSON.parse(body);
+
+        if (body.stat == 'fail') {
+          console.log(body.message);
+          process.exit();
+        }
+
+        flickrQueryString = _.extend({
+          method: 'flickr.galleries.getPhotos',
+          gallery_id: body.gallery.id
+        }, flickrQueryDefaults);
+
+        callback(null, querystring.stringify(flickrQueryString));
+      })
+    }
+    else {
+      console.log ('Write instructions');
+      process.exit();
+    }
+  },
+  function (err, flickrQueryString) {
+    if (err) {
+      throw err;
+    }
+    var callback = this;
+
+    request.get({url: flickrUrl + flickrQueryString}, function (err, resp, body) {
       if (err) {
         return callback(err);
       }
@@ -63,9 +110,14 @@ step(
     })
 
     _.each(photos, function (photo, i) {
-      var url = flickerUrl + '&method=flickr.photos.getSizes&photo_id=' + photo.id
-        , callback = photoGroup();
-      request.get({url:url}, function (err, resp, body) {
+      var callback = photoGroup();
+      var flickrQueryString = _.extend({
+        method: 'flickr.photos.getSizes',
+        photo_id: photo.id
+      }, flickrQueryDefaults);
+
+      flickrQueryString = querystring.stringify(flickrQueryString);
+      request.get({url: flickrUrl + flickrQueryString}, function (err, resp, body) {
         if (err) {
           return callback(err);
         }
