@@ -25,7 +25,11 @@ step(
 
       body = JSON.parse(body);
       console.log(body.photos.total + ' Photos Found on Flickr');
-      if (body.photos.total > 25) {
+      if (body.photos.total === '0') {
+        console.log('Cannot do a slideshow without photos. Sorry.');
+        process.exit();
+      }
+      else if (body.photos.total > 25) {
         console.log('Using the first 25.');
       }
       callback(null, body.photos.photo);
