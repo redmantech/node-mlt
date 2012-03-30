@@ -24,6 +24,12 @@ step(
       }
 
       body = JSON.parse(body);
+      
+      if (body.stat === 'fail') {
+        console.log(body.message);
+        process.exit();
+      }
+
       console.log(body.photos.total + ' Photos Found on Flickr');
       if (body.photos.total === '0') {
         console.log('Cannot do a slideshow without photos. Sorry.');
