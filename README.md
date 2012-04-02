@@ -6,6 +6,9 @@ This module will generate the XML-based instructions needed to power a [Media Lo
 
 See the examples folder for example applications using the library. The library's main demo can take a Flickr playlist, download the imges, play them in a simple slideshow, and adding a random music file if provided.
 
+Requirements: wget, ffmpeg, melt, (libx264 if you use default configuration)
+You must also create examples/config.js with your flickr apikey and ffmpeg options (see examples/config.examples.js)
+
 ## Api
 
 ### MLT xml object
@@ -33,7 +36,8 @@ mlt.push(image);
 
 ### Create affine filter
 ```js
-var affine = (new MLT.Filter.Affine).geometry([
+var affine = new MLT.Filter.Affine
+affine.geometry([
   {
     frame: 0,
     x: 0,
