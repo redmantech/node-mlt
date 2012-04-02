@@ -47,10 +47,15 @@ step(
         }, flickrQueryDefaults);
 
         callback(null, querystring.stringify(flickrQueryString));
-      })
+      });
+    }
+    else if (process.argv[2] === '-p' || process.argv[2] === '--photoset') {
+      flickrQueryString.method = 'flickr.photosets.getPhotos';
+      flickrQueryString.photoset_id = process.argv[3];
+      callback(null, querystring.stringify(flickrQueryString));
     }
     else {
-      console.log ('Usage:\n\t\t-s/--search {keyword}\n\t\t\tSearch by keyword\n\t\t-g/--gallery {gallery URL}\n\t\t\tCreate from a gallery');
+      console.log ('Usage:\n\t\t-s/--search {keyword}\n\t\t\tSearch by keyword\n\t\t-g/--gallery {gallery URL}\n\t\t\tCreate from a gallery\n\t\t-p/--photoset {photoset ID}\n\t\t\tCreate from a photoset');
       process.exit();
     }
   },
