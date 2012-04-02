@@ -69,13 +69,14 @@ step(
       if (err) {
         return callback(err);
       }
-
       body = JSON.parse(body);
       
       if (body.stat === 'fail') {
         console.log(body.message);
         process.exit();
       }
+
+      body.photos = body.photos || body.photoset;
 
       console.log(body.photos.total + ' Photos Found on Flickr');
       if (body.photos.total === '0') {
