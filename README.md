@@ -1,9 +1,14 @@
-# xmlbuilder-js
+# Node MLT
 
-An Media Lovin' Toolkit XMLBuilder for [node.js](http://nodejs.org/) based on
-XMLBuilder (https://raw.github.com/oozcitak/xmlbuilder-js/) and Kdenlive (http://http://www.kdenlive.org/)
+This module will generate the XML-based instructions needed to power a [Media Lovin' Toolkit](http://www.mltframework.org/) trascoded video, including audio overlays, transitions, picture slides, and watermarks.
 
-## Create a New MLT document and output it.
+## Examples
+
+See the examples folder for example applications using the library. The library's main demo can take a Flickr playlist, download the imges, play them in a simple slideshow, and adding a random music file if provided.
+
+## Api
+
+### MLT xml object
 ```js
 var MLT = require('node-mlt');
 
@@ -17,7 +22,7 @@ console.log(mlt.toString({pretty: true}));
 //
 ```
 
-## Add producers to your MLT document
+### Add producers to your MLT document
 ```js
 music = new MLT.Producer.Audio({source: '/home/jeffrey/Downloads/crazy.mp3'});
 mlt.push(music);
@@ -26,7 +31,7 @@ image = new MLT.Producer.Image({source: '/home/jeffrey/Desktop/dachshund.jpg'});
 mlt.push(image);
 ```
 
-##Create affine filter
+### Create affine filter
 ```js
 var affine = (new MLT.Filter.Affine).geometry([
   {
@@ -48,12 +53,12 @@ var affine = (new MLT.Filter.Affine).geometry([
 ]);
 ```
 
-##Create a watermark filter
+### Create a watermark filter
 ```js
 var watermark = new MLT.Filter.Watermark({resource: '/home/jeffrey/Desktop/signature.jpg'});
 ```
 
-##Create an audio-gain filter
+### Create an audio-gain filter
 ```js
 var fadeIn = new MLT.Filter.AudioFade({
   start: 0,
@@ -63,7 +68,7 @@ var fadeIn = new MLT.Filter.AudioFade({
 });
 ```
 
-## Add producers to a playlist with filters
+### Add producers to a playlist with filters
 ```js
 var playlist = new MLT.Playlist;
 
@@ -71,18 +76,18 @@ playlist.entry({producer: music, filters: [fadeIn], length: 1000); //length is i
 mlt.push(playlist);
 ```
 
-##Add a playlist to a track
+### Add a playlist to a track
 ```js
 var track = new MLT.Multitrack.Track(playlist);
 ```
 
-##Add a track to a multitrack
+### Add a track to a multitrack
 ```js
 var multitrack = new MLT.Multitrack;
 multitrack.addTrack(track);
 ```
 
-##Add a multitrack to a tractor
+### Add a multitrack to a tractor
 ```js
 var tractor = new MLT.Tractor;
 tractor.push(multitrack);
