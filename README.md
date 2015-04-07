@@ -75,7 +75,7 @@ var fadeIn = new MLT.Filter.AudioFade({
 ### Create a Frei0r blur filter
 ```js
 var frei0r = new MLT.Filter.Frei0r
-blur.squareblur([
+frei0r.squareblur([
   {
     frame: 0,
     size: 0.05
