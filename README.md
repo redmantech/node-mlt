@@ -72,6 +72,22 @@ var fadeIn = new MLT.Filter.AudioFade({
 });
 ```
 
+### Create a Frei0r blur filter
+```js
+var frei0r = new MLT.Filter.Frei0r
+frei0r.squareblur([
+  {
+    frame: 0,
+    size: 0.05
+  },
+  {
+    frame: 22,
+    size: 0
+  }
+]);
+
+```
+
 ### Add producers to a playlist with filters
 ```js
 var playlist = new MLT.Playlist;
