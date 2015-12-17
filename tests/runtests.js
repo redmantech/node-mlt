@@ -34,8 +34,16 @@ console.log('### MLT TRACTOR ###')
 require('./mlt/tractor.js')
 
 console.log('### MLT TRANSITION ###')
-require('./mlt/transition.js')
+require('./mlt/transition/base.js')
 
+console.log('### MLT TRANSITION LUMA ###')
+require('./mlt/transition/luma.js')
+
+console.log('### MLT TRANSITION COMPOSITE ###')
+require('./mlt/transition/composite.js')
+
+console.log('### MLT TRANSITION MIX ###')
+require('./mlt/transition/mix.js')
 
 
 console.log('*** END TESTS ***')
