@@ -45,5 +45,8 @@ require('./mlt/transition/composite.js')
 console.log('### MLT TRANSITION MIX ###')
 require('./mlt/transition/mix.js')
 
+console.log('### MLT PROFILE ###')
+require('./mlt/profile.js')
+
 
 console.log('*** END TESTS ***')
