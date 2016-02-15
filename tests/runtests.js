@@ -42,6 +42,9 @@ require('./mlt/transition/luma.js')
 console.log('### MLT TRANSITION COMPOSITE ###')
 require('./mlt/transition/composite.js')
 
+console.log('### MLT TRANSITION AFFINE ###')
+require('./mlt/transition/affine.js')
+
 console.log('### MLT TRANSITION MIX ###')
 require('./mlt/transition/mix.js')
 
