@@ -30,6 +30,15 @@ console.log(mlt.toString({pretty: true}));
 music = new MLT.Producer.Audio({source: '/home/jeffrey/Downloads/crazy.mp3'});
 mlt.push(music);
 
+text = new MLT.Producer.Text({
+    text: 'Hello <b>world</b>!',
+    color: 'red',
+    background: '0x00FFFF',
+    family: 'Arial',
+    size: '30'
+});
+mlt.push(text);
+
 image = new MLT.Producer.Image({source: '/home/jeffrey/Desktop/dachshund.jpg'});
 mlt.push(image);
 
