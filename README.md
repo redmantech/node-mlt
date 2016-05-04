@@ -39,6 +39,9 @@ text = new MLT.Producer.Text({
 });
 mlt.push(text);
 
+color = new MLT.Producer.Color({color: 'red'});
+mlt.push(color);
+
 image = new MLT.Producer.Image({source: '/home/jeffrey/Desktop/dachshund.jpg'});
 mlt.push(image);
 
