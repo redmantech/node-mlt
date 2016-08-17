@@ -32,6 +32,13 @@ mlt.push(music);
 
 image = new MLT.Producer.Image({source: '/home/jeffrey/Desktop/dachshund.jpg'});
 mlt.push(image);
+
+slideshow = new MLT.Producer.Image({
+    source: '/home/jeffrey/Desktop/frame-%04d.jpg',
+    delay: 5*25,
+    loop: 0
+});
+mlt.push(slideshow);
 ```
 
 ### Create affine filter
