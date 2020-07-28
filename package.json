@@ -27,7 +27,7 @@
   "devDependencies": {
     "gm": "0.5.x",
     "step": "0.0.x",
-    "request": "2.9.x"
+    "request": "2.88.x"
   },
   "licenses": [
     {
